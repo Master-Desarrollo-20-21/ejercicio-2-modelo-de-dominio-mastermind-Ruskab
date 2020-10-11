@@ -1,0 +1,109 @@
+@startuml
+
+Class Mastermind
+Class ClavijaColor
+Class ClavijaBoolean
+Class CompartimentoIntentos
+Class CompartimentoAciertos
+Class CompartimentoPatron
+Class FilaIntentoPatron
+Class FilaAciertpBoolean
+Class CombinacionSecreta
+Class EscudoOcultarPatron
+Class FichaColor
+Class FichaBoolean
+Class FichaTanteo
+Class Turn
+Class Player
+Class Color
+Class DefenderAction
+Class AttackerAction
+Class PutWhiteFicha
+Class PutBlackFicha
+
+Class Red
+Class Blue
+Class Green
+Class Yellow
+Class Pink
+Class White
+Class Black
+Class Brown
+
+
+Mastermind *-- CompartimentoAciertos
+Mastermind *-- CompartimentoIntentos
+Mastermind *-- CompartimentoPatron
+Mastermind *---- "4" FichaTanteo
+note on link
+    x2 Red
+    x2 Blue
+end note
+Mastermind *--- "60" FichaBoolean
+note on link
+    x60 Black
+    x60 White
+end note
+
+Mastermind *-- "192" FichaColor
+note on link
+   x24 Red
+   x24 Blue
+   x24 Green
+   x24 Yellow
+   x24 Pink
+   x24 White
+   x24 Black
+   x24 Brown
+end note
+Mastermind *-- Turn
+Mastermind *-- "2" Player
+FichaColor o-- Color
+ClavijaColor o-- Color
+Turn --> Player
+CompartimentoIntentos *-- "12" FilaIntentoPatron
+CompartimentoAciertos *-- "12" FilaAciertpBoolean
+FilaAciertpBoolean *-- "5" ClavijaBoolean
+FilaIntentoPatron *-- "5" ClavijaColor
+CompartimentoPatron *-- CombinacionSecreta
+CompartimentoPatron *-- EscudoOcultarPatron
+CombinacionSecreta *-- "5" ClavijaColor
+Defender --> CompartimentoPatron
+Attacker --> CompartimentoIntentos
+Defender --> CompartimentoAciertos
+Attacker ..> Acierto
+
+Defender ..> DefenderAction
+Attacker ...> AttackerAction
+
+PutBlackFicha ..> CompartimentoAciertos
+'PutBlackFicha ..> FichaBoolean
+PutWhiteFicha ..> CompartimentoAciertos
+'PutWhiteFicha ..> FichaBoolean
+
+Player <|-- Defender
+Player <|-- Attacker
+
+Color <|-- Red
+Color <|-- Blue
+Color <|-- Green
+Color <|-- Yellow
+Color <|-- Pink
+Color <|-- White
+Color <|-- Black
+Color <|-- Brown
+
+Acierto <|-- SamePositionAndColor
+Acierto <|-- SameColorNotPosition
+
+
+AttackerAction ..> FichaColor
+AttackerAction ..> CompartimentoIntentos
+
+DefenderAction <|-- PutBlackFicha
+DefenderAction <|-- PutWhiteFicha
+
+AttackerAction <|-- PutFichaColor
+
+
+@enduml
