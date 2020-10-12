@@ -1,0 +1,6 @@
+# Mastermind
+![mastermind](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/Master-Desarrollo-20-21/ejercicio-2-modelo-de-dominio-mastermind-Ruskab/main/mastermind.md&fmt=svg)
+
+
+
+
