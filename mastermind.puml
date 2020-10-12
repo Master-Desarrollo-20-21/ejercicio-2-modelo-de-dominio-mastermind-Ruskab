@@ -1,25 +1,23 @@
 @startuml
 
 Class Mastermind
-Class ClavijaColor
-Class ClavijaBoolean
-Class CompartimentoIntentos
-Class CompartimentoAciertos
-Class CompartimentoPatron
-Class FilaIntentoPatron
-Class FilaAciertpBoolean
-Class CombinacionSecreta
-Class EscudoOcultarPatron
-Class FichaColor
-Class FichaBoolean
-Class FichaTanteo
+Class Square
+Class isSuccessSquare
+Class ProposedCombinationSection
+Class isSuccessSection
+Class SecretCombinationSection
+Class ProposedCombinationAttempt
+Class isSuccessAttempt
+Class SecretPatron
+Class ColorPin
+Class isSuccessAttemptPin
 Class Turn
 Class Player
 Class Color
-Class DefenderAction
-Class AttackerAction
-Class PutWhiteFicha
-Class PutBlackFicha
+Class MakerAction
+Class BreakerAction
+Class PutWhitePin
+Class PutBlackPin
 
 Class Red
 Class Blue
@@ -31,21 +29,16 @@ Class Black
 Class Brown
 
 
-Mastermind *-- CompartimentoAciertos
-Mastermind *-- CompartimentoIntentos
-Mastermind *-- CompartimentoPatron
-Mastermind *---- "4" FichaTanteo
-note on link
-    x2 Red
-    x2 Blue
-end note
-Mastermind *--- "60" FichaBoolean
+Mastermind *-- isSuccessSection
+Mastermind *-- ProposedCombinationSection
+Mastermind *-- SecretCombinationSection
+Mastermind *--- "60" isSuccessAttemptPin
 note on link
     x60 Black
     x60 White
 end note
 
-Mastermind *-- "192" FichaColor
+Mastermind *-- "192" ColorPin
 note on link
    x24 Red
    x24 Blue
@@ -58,31 +51,33 @@ note on link
 end note
 Mastermind *-- Turn
 Mastermind *-- "2" Player
-FichaColor o-- Color
-ClavijaColor o-- Color
+ColorPin o-- Color
+Square o-- Color
 Turn --> Player
-CompartimentoIntentos *-- "12" FilaIntentoPatron
-CompartimentoAciertos *-- "12" FilaAciertpBoolean
-FilaAciertpBoolean *-- "5" ClavijaBoolean
-FilaIntentoPatron *-- "5" ClavijaColor
-CompartimentoPatron *-- CombinacionSecreta
-CompartimentoPatron *-- EscudoOcultarPatron
-CombinacionSecreta *-- "5" ClavijaColor
-Defender --> CompartimentoPatron
-Attacker --> CompartimentoIntentos
-Defender --> CompartimentoAciertos
-Attacker ..> Acierto
+ProposedCombinationSection *-- "12" ProposedCombinationAttempt
+isSuccessSection *-- "12" isSuccessAttempt
+isSuccessAttempt *-- "5" isSuccessSquare
+ProposedCombinationAttempt *-- "5" Square
+SecretCombinationSection *-- SecretPatron
+SecretPatron *-- "5" Square
+Maker --> SecretCombinationSection
+Breaker --> ProposedCombinationSection
+Maker --> isSuccessSection
+Breaker ..> BreakerGoal
+BreakerGoal ..> ProposedCombinationAttempt
+BreakerGoal ....> SecretPatron
 
-Defender ..> DefenderAction
-Attacker ...> AttackerAction
+Maker ..> MakerAction
+Breaker ...> BreakerAction
 
-PutBlackFicha ..> CompartimentoAciertos
-'PutBlackFicha ..> FichaBoolean
-PutWhiteFicha ..> CompartimentoAciertos
-'PutWhiteFicha ..> FichaBoolean
+MakerAction ..> isSuccessAttempt
+MakerAction ....> SecretPatron
+MakerAction ....> isSuccessAttemptPin
+'PutBlackPin ..> isSuccessAttemptPin
+'PutWhitePin ..> isSuccessAttemptPin
 
-Player <|-- Defender
-Player <|-- Attacker
+Player <|-- Maker
+Player <|-- Breaker
 
 Color <|-- Red
 Color <|-- Blue
@@ -93,17 +88,21 @@ Color <|-- White
 Color <|-- Black
 Color <|-- Brown
 
-Acierto <|-- SamePositionAndColor
-Acierto <|-- SameColorNotPosition
+BreakerGoal <|-- SamePositionAndColor
+BreakerGoal <|-- SameColorNotPosition
+BreakerGoal <|-- WinTheGame
 
 
-AttackerAction ..> FichaColor
-AttackerAction ..> CompartimentoIntentos
+BreakerAction ..> ColorPin
+BreakerAction ....> ProposedCombinationAttempt
 
-DefenderAction <|-- PutBlackFicha
-DefenderAction <|-- PutWhiteFicha
+MakerAction <|-- PutBlackPin
+MakerAction <|-- PutWhitePin
 
-AttackerAction <|-- PutFichaColor
+Maker ..> MakerGoalWinTheGame
+MakerGoalWinTheGame ...> ProposedCombinationSection
+
+BreakerAction <|-- PutColorPin
 
 
 @enduml
